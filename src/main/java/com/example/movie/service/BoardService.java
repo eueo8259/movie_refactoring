@@ -43,7 +43,6 @@ public class BoardService {
     }
 
     public void insert(BoardDto dto) {
-
         Movies movies = em.find(Movies.class, dto.getMovieNo());
         User user = em.find(User.class, dto.getUserNo());
         Board board = Board.builder()

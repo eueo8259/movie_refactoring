@@ -82,40 +82,6 @@ public class BookService {
         }
     }
 
-    //JPQL
-    public List<SeatDto> searchSeatByMovieLocationAndDate(Long movieNo, Long locationNo, LocalDate date) {
-        String sql = "SELECT s FROM Seat s WHERE s.ticket.movies.movieNo = :movieNo " +
-                "AND s.ticket.location.locationNo = :locationNo AND s.ticket.bookDate = :date";
-        TypedQuery<Seat> query = em.createQuery(sql, Seat.class)
-                .setParameter("movieNo", movieNo)
-                .setParameter("locationNo", locationNo)
-                .setParameter("date", date);
-        List<Seat> seatList = query.getResultList();
-
-        return seatList.stream()
-                .map(x -> SeatDto.fromSeatEntity(x))
-                .toList();
-    }
-
-    @Transactional
-    public List<Ticket> viewReservationDetails(Long userNo) {
-
-        String sql = "SELECT t FROM Ticket t WHERE t.user.userNo = :userNo";
-        TypedQuery<Ticket> query = em.createQuery(sql, Ticket.class)
-                .setParameter("userNo", userNo);
-        List<Ticket> ticketInformation = query.getResultList();
-
-        return ticketInformation;
-    }
-
-    @Transactional
-    public List<Ticket> viewTicketList() {
-        String sql = "SELECT t FROM Ticket t";
-        TypedQuery<Ticket> query = em.createQuery(sql, Ticket.class);
-        List<Ticket> ticketList = query.getResultList();
-        return ticketList;
-    }
-
     @Transactional
     public void ticketBookService(Long movieNo, Long locationNo, Long userNo, LocalDate date, List<List<Integer>> selectedSeats, int totalPrice) {
 

@@ -116,7 +116,7 @@ public class AdminController {
 
     @GetMapping("ticket")
     public String ticket(Model model) {
-        List<Ticket> ticketDtoList = bookService.viewTicketList();
+        List<Ticket> ticketDtoList = ticketService.viewTicketList();
         model.addAttribute("ticketList", ticketDtoList);
         return "admin/ticket";
     }

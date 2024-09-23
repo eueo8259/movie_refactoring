@@ -74,7 +74,7 @@ public class UserController {
     public String ticket(Model model){
 
         UserDto userDto = userService.loginUserInfo();
-        List<Ticket> ticketList = bookService.viewReservationDetails(userDto.getUserNo());
+        List<Ticket> ticketList = ticketService.viewReservationDetails(userDto.getUserNo());
         model.addAttribute("ticketList", ticketList);
         return "user/user_ticket";
     }

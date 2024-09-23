@@ -1,12 +1,11 @@
 package com.example.movie.service;
 
+import com.example.movie.dto.SeatDto;
 import com.example.movie.dto.TicketDto;
-import com.example.movie.entity.Location;
-import com.example.movie.entity.Movies;
-import com.example.movie.entity.Ticket;
-import com.example.movie.entity.User;
+import com.example.movie.entity.*;
 import com.example.movie.repository.TicketRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,5 +78,40 @@ public class TicketService {
         // 사용자 정보를 업데이트
         em.merge(user);
     }
+
+    @Transactional
+    public List<Ticket> viewTicketList() {
+        String sql = "SELECT t FROM Ticket t";
+        TypedQuery<Ticket> query = em.createQuery(sql, Ticket.class);
+        List<Ticket> ticketList = query.getResultList();
+        return ticketList;
+    }
+
+    @Transactional
+    public List<Ticket> viewReservationDetails(Long userNo) {
+
+        String sql = "SELECT t FROM Ticket t WHERE t.user.userNo = :userNo";
+        TypedQuery<Ticket> query = em.createQuery(sql, Ticket.class)
+                .setParameter("userNo", userNo);
+        List<Ticket> ticketInformation = query.getResultList();
+
+        return ticketInformation;
+    }
+
+    public List<SeatDto> searchSeatByMovieLocationAndDate(Long movieNo, Long locationNo, LocalDate date) {
+        String sql = "SELECT s FROM Seat s WHERE s.ticket.movies.movieNo = :movieNo " +
+                "AND s.ticket.location.locationNo = :locationNo AND s.ticket.bookDate = :date";
+        TypedQuery<Seat> query = em.createQuery(sql, Seat.class)
+                .setParameter("movieNo", movieNo)
+                .setParameter("locationNo", locationNo)
+                .setParameter("date", date);
+        List<Seat> seatList = query.getResultList();
+
+        return seatList.stream()
+                .map(x -> SeatDto.fromSeatEntity(x))
+                .toList();
+    }
+
+
 
 }

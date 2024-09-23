@@ -1,16 +1,11 @@
 package com.example.movie.controller;
 
 import com.example.movie.dto.*;
-import com.example.movie.service.BookService;
-import com.example.movie.service.LocationService;
-import com.example.movie.service.MovieService;
-import com.example.movie.service.UserService;
-import jakarta.servlet.http.HttpSession;
+import com.example.movie.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,12 +19,14 @@ public class BookController {
     private final LocationService locationService;
     private final MovieService movieService;
     private final BookService bookService;
+    private final TicketService ticketService;
 
-    public BookController(UserService userService, LocationService locationService, MovieService movieService, BookService bookService) {
+    public BookController(UserService userService, LocationService locationService, MovieService movieService, BookService bookService, TicketService ticketService) {
         this.userService = userService;
         this.locationService = locationService;
         this.movieService = movieService;
         this.bookService = bookService;
+        this.ticketService = ticketService;
     }
 
     //GetMapping의 기능은 화면 출력만. (출력에 필요한 model.addAttribute하는 거 포함)
@@ -62,7 +59,7 @@ public class BookController {
         model.addAttribute("locationNo", locationNo);
         model.addAttribute("date", date);
 
-        List<SeatDto> seatDtoList = bookService.searchSeatByMovieLocationAndDate(movieNo, locationNo, date);
+        List<SeatDto> seatDtoList = ticketService.searchSeatByMovieLocationAndDate(movieNo, locationNo, date);
         boolean[][] seats = bookService.convertToSeatArray(seatDtoList);
 
         // 모델에 좌석 배열을 추가
