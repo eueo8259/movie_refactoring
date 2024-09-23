@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 부트스트랩 CSS 링크 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/user/information}">내 정보 수정</a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link">|</span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/user/ticket}">예매 내역</a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link">|</span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/user/delete}">회원 탈퇴</a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link">|</span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/user/money}">금액 충전</a>
+        </li>
+    </ul>
+    <br>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">$$$ 충전완료 $$$</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" th:text="'이름 : ' + ${userDto.userName}"></li>
+                            <li class="list-group-item" th:text="'생년월일 : ' + ${userDto.birth}"></li>
+                            <li class="list-group-item" th:text="'이메일 : ' + ${userDto.email}"></li>
+                            <li class="list-group-item" th:text="'전화번호 : ' + ${userDto.phone}"></li>
+                            <li class="list-group-item" th:text="'총 금액 : ' + ${userDto.money}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

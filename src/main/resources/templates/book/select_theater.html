@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf/org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Booking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/select_seat_css.css">
+
+    <style>
+        .alert-danger {
+            text-align: center;
+            margin: 0 auto;
+            max-width: 600px;
+            background-color: white; /* 배경색을 하얀색으로 설정 */
+            color: black; /* 글자색을 검정색으로 설정 */
+            font-size: 24px; /* 글자 크기를 원하는 대로 설정 */
+            padding: 4px; /* 내부 여백을 추가하여 메시지가 더 크게 보이도록 설정 */
+            border: 2px solid red; /* 예시로 테두리 스타일 설정 */
+            border-radius: 10px; /* 테두리의 둥근 모서리 설정 */
+        }
+    </style>
+</head>
+<body>
+    <form th:action="@{/cinema/seat}" method="get" id="selectionForm">
+
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <div class="location-container"  style="margin-top: 105px;">
+            <label for="location">지점 선택:</label>
+            <br><br>
+            <select id="location" name="location">
+                <option disabled selected value="">지점을 선택해주세요</option>
+                <option th:each="locationDto : ${locationDtoList}"
+                    th:value="${locationDto.locationNo}"
+                    th:text="${locationDto.locationName}"></option>
+            </select>
+        </div>
+
+        <br>
+
+        <div class="movie-container">
+            <label for="movie">
+                Pick a Movie :
+            </label>
+            <br>
+            <select name="movie" id="movie" onchange="checkMovieRating()">
+                <option disabled selected value="">영화를 선택해주세요</option>
+                <option th:each="moviesDto : ${moviesDtoList}"
+                        th:value="${moviesDto.movieNo}"
+                        th:text="${moviesDto.movieTitle}"
+                        th:attr="data-rate=${moviesDto.movieRate}"
+                ></option>
+            </select>
+            <input type="hidden" id="userYears" th:value="${years}" />
+        </div>
+        <br>
+        <div class="select-container">
+            <label for="date">날짜 선택:</label>
+            <br>
+            <select id="date" name="date" class="select">
+                <option disabled selected value="">날짜를 선택해주세요</option>
+                <option th:value="2024-05-09">2024-05-09</option>
+
+                <option th:each="date : ${dateList}"
+                        th:value="${date}"
+                        th:text="${#temporals.format(date, 'yyyy-MM-dd')}">
+                </option>
+            </select>
+        </div>
+        <button class="next" type="button" onclick="submitSelection()">다음</button>
+    </form>
+    <br><br>
+        <a href="/cinema">
+            <input type="button" value="메인으로" class="back">
+        </a>
+
+    <script>
+        function submitSelection() {
+            // 사용자가 선택한 영화, 지점, 날짜 정보를 폼에 추가
+
+            if (document.getElementById("movie").value.trim().length == 0) {
+                alert("영화를 선택하지 않았습니다.");
+                document.getElementById("movie").focus();
+                return false;
+            }
+            if (document.getElementById("location").value.trim().length == 0) {
+                alert("지점을 선택하지 않았습니다.");
+                document.getElementById("location").focus();
+                return false;
+            }
+            if (document.getElementById("date").value.trim().length == 0) {
+                alert("날짜를 선택하지 않았습니다.");
+                document.getElementById("date").focus();
+                return false;
+            }
+
+            document.getElementById('selectionForm').submit();
+        }
+
+        function checkMovieRating() {
+            var selectedMovie = document.getElementById("movie");
+            var selectedOption = selectedMovie.options[selectedMovie.selectedIndex];
+            var selectedMovieRate = selectedOption.getAttribute("data-rate");
+            var years = parseInt(document.getElementById("userYears").value);
+
+            if (selectedMovieRate === "PG-13") {
+                if (years < 15) {
+                    alert("이 영화는 15세 이용가입니다.");
+                    selectedMovie.selectedIndex = 0;
+                    selectedMovie.focus();
+                    return; // Stop further execution
+                }
+            } else if (selectedMovieRate === "PG-17") {
+                if (years < 19) {
+                    alert("이 영화는 19세 이용가입니다.");
+                    selectedMovie.selectedIndex = 0;
+                    selectedMovie.focus();
+                    return; // Stop further execution
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>

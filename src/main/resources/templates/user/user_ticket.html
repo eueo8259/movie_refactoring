@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 부트스트랩 CSS 링크 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 부트스트랩 아이콘 라이브러리 링크 추가 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user_check.js}"></script>
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <div align="center" class="container">
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/main}">내 정보</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/ticket}">예매 정보 확인</a>
+            </li>
+        </ul>
+
+        <body>
+        <div th:if="${ticketList != null}">
+            <div th:each="ticket : ${ticketList}">
+                <h1>================================================</h1>
+                <h1>티켓 정보</h1>
+                <p>TicketNo: <span th:text="${ticket.ticketNo}"></span></p>
+                <p>영화: <span th:text="${ticket.movies.movieTitle}"></span></p>
+                <p>지점: <span th:text="${ticket.location.locationName}"></span></p>
+                <p>예매 날짜: <span th:text="${ticket.bookDate}"></span></p>
+                <p>좌석:</p>
+                <h1>좌석 정보</h1>
+                <div th:each="seat : ${ticket.seatList}">
+                    <p>Seat: <span th:text="${seat.getRowLabel()} + ${seat.seatColumnNo}"></span></p>
+                </div>
+                <h1>TicketPrice: <span th:text="${ticket.totalPrice}"></span></h1>
+                <form th:action="@{/user/deleted/{ticketNo}(ticketNo=${ticket.ticketNo})}" method="post">
+                <input type="hidden" name="ticketNo" th:value="${ticket.ticketNo}">
+                <button type="submit" class="btn btn-danger btn-sm">예매 취소</button>
+                </form>
+
+            </div>
+        </div>
+
+
+        <div th:if="${ticketList == null}">
+            <p>예매 정보가 없습니다.</p>
+        </div>
+        </body>
+
+
+    </div>
+</div>
+</body>
+</html>

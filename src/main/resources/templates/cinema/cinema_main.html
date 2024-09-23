@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>영화 메인 페이지</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/js/main.js}"></script>
+</head>
+<body style="background-image: url('https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimg.freepik.com%2Ffree-vector%2Fcinema-realistic-poster-with-illuminated-bucket-of-popcorn-drink-3d-glasses-reel-tickets-on-blue-background-with-tapes-vector-illustration_1284-77070.jpg&type=sc960_832');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;">
+
+<div class="content" layout:fragment="content">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" th:href="@{/cinema}">절찬 상영 중</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{cinema/movie}">영화 목록</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+
+    <div class="row" id="show">
+        <div class="col-lg-4 col-md-6 mb-4" th:each="movie : ${movie}" th:object="${movie}">
+            <div class="card h-100 bg-light">
+                <div style="height: 350px; overflow: hidden;">
+                    <img th:src="@{*{img}}" class="card-img-top" alt="영화 포스터" style="height: 100%; width: 100%; object-fit: cover;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="*{movieTitle}"></h5>
+                    <p class="card-text" th:text="'개봉일 : ' + *{movieDate}"></p>
+                    <p class="card-text" th:text="'관람 등급 : ' + *{movieRate}"></p>
+                    <p class="card-text" th:text="'평점 : ' + *{goodPointAvg}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="btn_show">무한 반복 시작</button>
+
+</div>
+</body>
+</html>

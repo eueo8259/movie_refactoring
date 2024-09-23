@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 부트스트랩 CSS 링크 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 추가한 스타일 */
+        .content {
+            margin: 20px;
+        }
+
+        .card {
+            width: 300px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/user/information}">내 정보 수정</a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link">|</span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/user/ticket}">예매 내역</a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link">|</span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/user/delete}">회원 탈퇴</a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link">|</span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/user/money}">금액 충전</a>
+        </li>
+    </ul>
+    <br>
+    <h4 class="text-center">$$$ 사용자 정보 $$$</h4>
+    <div class="card">
+        <div class="card-header text-center" style="background-color: #007bff; color: #fff; font-weight: bold; font-size: 18px;">
+            정보
+        </div>
+
+
+        <div class="card-body">
+            <ul>
+                <li th:text="'이름 : ' + ${userDto.userName}"></li>
+                <li th:text="'생년월일 : ' + ${userDto.birth}"></li>
+                <li th:text="'이메일 : ' + ${userDto.email}"></li>
+                <li th:text="'전화번호 : ' + ${userDto.phone}"></li>
+                <li th:text="'총 금액 : ' + ${userDto.money} + '원'"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 부트스트랩 CSS 링크 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 부트스트랩 아이콘 라이브러리 링크 추가 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user_check.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <div align="center" class="container">
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin}">관리자메인</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" th:href="@{/admin/user}">회원관리</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/movie}">영화관리</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/ticket}">영화예매내역관리</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/board}">영화게시판관리</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/total}">총 매출 확인</a>
+            </li>
+        </ul>
+
+        <br>
+        <h4 class="text-center">🙍🏻️ 회원수정 🙍🏻‍</h4>
+        <br>
+
+        <form id="frm" class="row g-3" th:object="${userDto}">
+            <div align="center" class="col-md-6 offset-md-3">
+                <label>ID : [[*{userNo}]]</label>
+            </div>
+            <div class="col-md-6">
+                <label for="userId" class="form-label">아이디</label>
+                <input id="userId" type="text" class="form-control" th:field="*{userId}" readonly>
+            </div>
+
+            <div class="col-md-6">
+                <label for="userName" class="form-label">이름</label>
+                <input id="userName" type="text" class="form-control" th:field="*{userName}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="password1" class="form-label">비밀번호</label>
+                <input id="password1" type="password" class="form-control" th:field="*{password1}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="password2" class="form-label">비밀번호확인</label>
+                <input id="password2" type="password" class="form-control" th:field="*{password2}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="birth" class="form-label">생년월일</label>
+                <input id="birth" name="birth" type="date" class="form-control" th:field="*{birth}" th:max="${maxDate}">
+                <div class="invalid-feedback" th:errors="*{birth}"></div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="phone" class="form-label">전화번호</label>
+                <input id="phone" type="text" class="form-control" th:field="*{phone}">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">이메일</label>
+                <input type="text" class="form-control" th:field="*{email}">
+            </div>
+
+            <div align="center" class="col-md-6 offset-md-3">
+                <label >회원등급 : [[*{userRole}]]</label>
+            </div>
+
+            <input type="hidden" th:field="*{userNo}">
+            <input type="hidden" th:field="*{userRole}">
+            <input type="hidden" th:field="*{money}">
+
+            <div align="center" class="col-12">
+                <button type="button" class="btn btn-primary" onclick="update()">수정</button>
+                <a class="btn btn-secondary" th:href="@{/admin/user}">취소</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

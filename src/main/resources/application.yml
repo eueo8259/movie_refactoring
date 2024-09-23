@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+
+#spring:
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:5432/cinema
+#    username: postgres
+#    password: 1111
+#
+#  sql:
+#    init:
+#      mode: always
+#
+#
+#  jpa:
+#    defer-datasource-initialization: true
+#    hibernate:
+#      ddl-auto: create  # 데이터베이스 스키마를 자동으로 생성할 때 사용합니다.
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL용 Hibernate 방언
+#        show_sql: true
+#        format_sql: true
+
+#MySQL 연결하기
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cinema
+    username: root
+    password: 1111
+
+#  sql:
+#    init:
+#      mode: always
+
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect

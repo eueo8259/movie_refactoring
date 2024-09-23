@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 부트스트랩 CSS 링크 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/movie_check.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <div class="container">
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin}">관리자메인</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/user}">회원관리</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/movie}">영화관리</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/ticket}">영화예매내역관리</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" th:href="@{/admin/board}">영화게시판관리</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">|</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/total}">총 매출 확인</a>
+            </li>
+        </ul>
+
+        <br>
+        <h4 class="text-center">📅🔨 게시판 수정 🔨📅</h4>
+        <br>
+
+        <form id="frm" th:action="@{/admin/board_update}" method="post" th:object="${board}" class="row g-3">
+            <div align="center" class="col-md-6 offset-md-3">
+                <label for="id" class="form-label text-center">ID : [[*{boardId}]]</label>
+            </div>
+
+            <div class="col-md-6">
+                <label for="title" class="form-label">제목</label>
+                <input type="text" class="form-control" th:field="*{title}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="content" class="form-label">내용</label>
+                <input type="text" class="form-control" th:field="*{content}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="movieTitle" class="form-label">영화</label>
+                <input type="text" class="form-control" th:field="*{movieNo}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="userName" class="form-label">작성자</label>
+                <input type="text" class="form-control" th:field="*{user}">
+            </div>
+
+            <input type="hidden" th:field="*{boardId}">
+
+            <div align="center" class="col-12">
+                <button type="button" class="btn btn-primary" onclick="check()">수정</button>
+                <a class="btn btn-secondary" th:href="@{/admin/board}">취소</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

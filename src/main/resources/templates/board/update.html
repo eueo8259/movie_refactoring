@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>자유게시판</title>
+    <script type="text/javascript" th:src="@{/js/board_check.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <div class="container">
+        <br>
+        <h4 class="text-center">✏ 게시판 글쓰기 ✏</h4>
+        <br>
+        <form id="frm" th:object="${boardDto}">
+            <div class="mb-3">
+                <label for="movieNo">영화</label>
+                <select id="movieNo" name="movieNo" class="form-select" th:field="*{movieNo}">
+                    <option value="">영화를 선택하세요</option>
+                    <option th:each="movie: ${moviesDtoList}" th:value="${movie.movieNo}"
+                            th:text="${movie.movieTitle}" ></option>
+                </select>
+            </div>
+            <div>
+                <label for="title" class="form-label">제목</label>
+                <input id="title" type="text" class="form-control" th:field="*{title}">
+            </div>
+            <br>
+            <div>
+                <label for="content" class="form-label">내용</label>
+                <input id="content" type="text" class="form-control" th:field="*{content}">
+            </div>
+            <br>
+            <div>
+                <label for="goodPoint">별점</label>
+                <select id="goodPoint" name="goodPoint" class="form-select">
+                    <option th:each="i : ${#numbers.sequence(1, 5)}"
+                            th:value="${i}" th:text="${i}"></option>
+                </select>
+            </div>
+            <input type="hidden" id="boardId" th:field="*{boardId}">
+            <br>
+            <div align="center" class="col-12">
+                <button type="button" class="btn btn-primary" onclick="update()">수정</button>
+                <a class="btn btn-secondary" th:href="@{/board/list}">취소</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

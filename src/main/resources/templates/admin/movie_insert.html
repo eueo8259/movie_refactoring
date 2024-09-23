@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>영화 등록</title>
+	<!-- 부트스트랩 CSS 링크 추가 -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<script type="text/javascript" th:src="@{/js/movie_check.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div class="content" layout:fragment="content">
+	<div class="container">
+	<ul class="nav nav-tabs mb-3">
+		<li class="nav-item">
+			<a class="nav-link" th:href="@{/admin}">관리자메인</a>
+		</li>
+		<li class="nav-item">
+			<span class="nav-link">|</span>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" th:href="@{/admin/user}">회원관리</a>
+		</li>
+		<li class="nav-item">
+			<span class="nav-link">|</span>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link active" th:href="@{/admin/movie}">영화관리</a>
+		</li>
+		<li class="nav-item">
+			<span class="nav-link">|</span>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" th:href="@{/admin/ticket}">영화예매내역관리</a>
+		</li>
+		<li class="nav-item">
+			<span class="nav-link">|</span>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" th:href="@{/admin/board}">영화게시판관리</a>
+		</li>
+		<li class="nav-item">
+			<span class="nav-link">|</span>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" th:href="@{/admin/total}">총 매출 확인</a>
+		</li>
+	</ul>
+	<br>
+	<h4 class="text-center">👉🏻📽 영화 등록 📽👈🏻</h4>
+	<br>
+	<form id="frm" class="container" th:action="@{/admin/insert}" method="post" th:object="${movie}">
+		<div class="mb-3">
+			<label for="movieTitle" class="form-label">영화 제목</label>
+			<input id="movieTitle" type="text" class="form-control" th:field="*{movieTitle}">
+		</div>
+
+		<div class="mb-3">
+			<label for="movieDate" class="form-label">영화 개봉일</label>
+			<input id="movieDate" name="movieDate" type="date" class="form-control" th:field="*{movieDate}">
+		</div>
+
+		<div class="mb-3">
+			<label for="movieRate" class="form-label">영화 등급</label>
+			<select id="movieRate" class="form-select" th:field="*{movieRate}">
+				<option value="G">전체 관람가</option>
+				<option value="PG">7세 이상 관람가</option>
+				<option value="PG-13">13세 이상 관람가</option>
+				<option value="R">청소년 관람불가</option>
+				<option value="NC-17">18세 이상 관람가</option>
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label for="moviePrice" class="form-label">영화 가격</label>
+			<input id="moviePrice" name="moviePrice" type="text" class="form-control" th:field="*{price}">
+		</div>
+
+
+		<div class="mb-3">
+			<label for="img" class="form-label">포스터(링크)🖼</label>
+			<input id="img" name="movieDate" type="text" class="form-control" th:field="*{img}">
+		</div>
+
+		<button type="button" class="btn btn-primary" onclick="insert()">등록</button>
+		<button type="reset" class="btn btn-secondary">초기화</button>
+
+		<div class="text-end">
+			<a class="btn btn-outline-success" th:href="@{/admin/movie}">취소</a>
+		</div>
+	</form>
+
+	</div>
+</div>
+</body>
+</html>

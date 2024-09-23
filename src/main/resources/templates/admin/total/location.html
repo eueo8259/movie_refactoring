@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <!-- 부트스트랩 CSS 링크 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <div class="container mt-5">
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin}">관리자메인</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/user}">회원관리</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/movie}">영화관리</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/ticket}">영화예매내역관리</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/board}">영화게시판관리</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" th:href="@{/admin/total}">총 매출 확인</a>
+            </li>
+        </ul>
+        <div class="table-responsive">
+            <br>
+            <h5 class="text-center">🚩 지점 매출 🚩</h5>
+            <br>
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                <tr>
+                    <th scope="col">지점</th>
+                    <th scope="col">매출</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ticket : ${ticket}">
+                    <td th:text="${ticket.title}"></td>
+                    <td th:text="${ticket.price}"></td>
+                </tr>
+                </tbody>
+                <thead class="table-secondary">
+                <tr>
+                    <th>총합</th>
+                    <th th:text="${formattedSum}"></th>
+                </tr>
+                </thead>
+            </table>
+            <div class="text-center">
+                <a class="btn btn-outline-success" th:href="@{/admin/total_movie}">영화별</a>
+                <a class="btn btn-outline-success" th:href="@{/admin/total_name}">회원별</a>
+                <a class="btn btn-outline-success" th:href="@{/admin/total_date}">날짜별</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

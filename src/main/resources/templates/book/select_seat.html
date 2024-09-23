@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf/org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Booking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/select_seat_css.css">
+</head>
+<body>
+<form th:action="@{/cinema/seat}" method="post" id="seatForm">
+    <div id="container">
+        <ul class="showcase">
+            <li>
+                <div class="availableSeat"></div>
+                <small class="small">Available Seat</small>
+            </li>
+            <li>
+                <div class="selectedSeatIcon"></div>
+                <small class="small">Selected Seat</small>
+            </li>
+            <li>
+                <div class="occupiedSeat"></div>
+                <small class="small">Occupied Seat</small>
+            </li>
+        </ul>
+
+        <input type="hidden" id="selectedSeatsInput" name="selectedSeats">
+
+        <div th:each="row, rowStat : ${seats}" class="row">
+            <span th:each="seatStatus, colStat : ${row}"
+              th:class="${seatStatus} ? 'seat' : 'occupiedSeat'"
+              th:attr="data-row=${rowStat.index}, data-column=${colStat.index}">
+            </span>
+        </div>
+
+<!--        <p class="text">You have selected <span id="count">0</span> seats for a price of $ <span id="costs">0</span></p>-->
+
+        <input type="hidden" id="movieNo" name="movieNo" th:value="${moviesDto.movieNo}">
+        <input type="hidden" id="moviePrice" name="moviePrice" th:value="${moviesDto.price}">
+        <input type="hidden" id="totalPriceInput" name="totalPrice">
+        <input type="hidden" id="locationNo" name="locationNo" th:value="${locationNo}">
+        <input type="hidden" id="date" name="date" th:value="${date}">
+
+        <div style="margin-top: 125px;">
+            <h1>Total Price: <span id="totalPriceDisplay">0.00</span>krw</h1>
+        </div>
+        <br><br>
+
+
+        <input type="button" value="예매" class="next" onclick="submitForm()">
+        <a href="/cinema">
+            <input type="button" value="메인으로" class="back">
+        </a>
+
+    </div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    let selectedSeats = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const seats = document.querySelectorAll('.seat');
+
+        seats.forEach(seat => {
+            seat.addEventListener('click', () => {
+                if (!seat.classList.contains('selectedSeatIcon')) {
+                    seat.classList.add('selectedSeatIcon');
+                    seat.classList.remove('seat');
+                    reserveSeat(seat)
+                } else {
+                    seat.classList.remove('selectedSeatIcon');
+                    seat.classList.add('seat');
+                    cancelReservation(seat);
+                }
+                updateTotalPrice();
+            });
+        });
+    });
+
+
+    function reserveSeat(seatElement) {
+    const row = seatElement.getAttribute('data-row');
+    const column = seatElement.getAttribute('data-column');
+    const seatInfo = { row: row, column: column };
+
+    selectedSeats.push(seatInfo);
+}
+    function cancelReservation(seatElement) {
+    const row = seatElement.getAttribute('data-row');
+    const column = seatElement.getAttribute('data-column');
+    const index = selectedSeats.findIndex(seat => seat.row === row && seat.column === column);
+
+    if (index !== -1) {
+        selectedSeats.splice(index, 1);
+    }
+}
+
+function updateTotalPrice() {
+    const pricePerSeat = parseFloat(document.getElementById('moviePrice').value);
+    const totalPrice = selectedSeats.length * pricePerSeat;
+    document.getElementById('totalPriceDisplay').textContent = totalPrice; // Display the total price
+    document.getElementById('totalPriceInput').value = totalPrice; // Ensure it's formatted to two decimal places
+
+
+}
+
+function submitForm() {
+    const movieNo = document.getElementById('movieNo').value;
+    const locationNo = document.getElementById('locationNo').value;
+    const date = document.getElementById('date').value;
+    const totalPrice = parseFloat(document.getElementById('totalPriceDisplay').textContent);
+
+    const selectedSeatsArray = selectedSeats.map(seat => [parseInt(seat.row), parseInt(seat.column)]);
+
+    if (selectedSeatsArray.length === 0) {
+        alert('좌석이 선택되지 않았습니다');
+        return;
+    }
+
+    // 전송할 데이터 객체 생성
+    const data = {
+        movieNo: movieNo,
+        locationNo: locationNo,
+        date: date,
+        totalPrice: totalPrice,
+        selectedSeats: selectedSeatsArray
+    };
+    console.log(data);
+    axios.post('/api/cinema/seat', data)
+        .then(response => {
+            alert(response.data.message);  // 메시지 표시
+            if (response.data.success) {
+                window.location.href = '/cinema';  // 예매 성공 시 메인으로 이동
+            } else {
+                window.location.href = '/cinema/theater';  // 예매 실패 시 예매 화면으로 이동
+            }
+        })
+        .catch(error => {
+            alert('예상치 못한 오류가 발생했습니다.');  // 기본 오류 메시지
+        });
+}
+
+</script>
+</body>
+
+</html>
